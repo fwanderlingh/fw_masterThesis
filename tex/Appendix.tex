@@ -1,0 +1,47 @@
+\chapter{First iterations of the online coverage algorithms}
+\label{app:firstSteps}
+
+To observe the behaviour of the algorithms we will look at the evolution of the \emph{Count Map}, that is the matrix that contains the visits count for all the vertices in the graph. The map used for this purposes is 4x4 obstacle free grid-map. For simplicity let's imagine to sample the time every time we reach a new vertex (a cell of the map). To be able to look at a fairly wide time window, for all the algorithms are presented the count maps for $t$=0, $t$=3, $t$=6, $t$=9.
+
+In the pictures we will consider the time instant when the robot has just arrived on the current cell but not yet made is decision on the next move. The cell in which the robot is currently on is highlighted in grey.
+
+\captionsetup[table]{name=Fig.}
+
+%%%%%%%%%%%%%%
+
+\section{Node Counting}
+
+\input{./tex/tables/NC_firstSteps}
+
+\clearpage
+%%%%%%%%%%%%%%
+
+\section{Learning Real-Time A*}
+For the Learning Real Time A* in addition to the visits count map is presented the \emph{LRTA-count} one, following the LRTA update rule as in algorithm \ref{alg:rt_lrta}.
+
+\input{./tex/tables/LRTA_firstSteps}
+
+\input{./tex/tables/LRTA_firstSteps_LRTAcount}
+
+%%%%%%%%%%%%%%
+
+\section{Edge Counting}
+
+\input{./tex/tables/EC_firstSteps}
+
+%%%%%%%%%%%%%%
+
+\section{PatrolGRAPH*}
+
+\input{./tex/tables/PG_firstSteps}
+
+
+
+
+
+
+
+
+
+
+

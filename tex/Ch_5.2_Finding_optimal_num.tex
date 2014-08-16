@@ -1,0 +1,59 @@
+
+\section{Finding the optimal number of robots}
+To find the optimal number of robots the map tested were: the city environment map and 3 increasing size obstacle-free square maps: 5x5, 10x10, 15x15. After normalising the result parameters, the method used for establishing the optimal number of robots is evaluating the output of a weighted loss function $\mathscr{L}$ where three $\lambda$ weight are assigned to each of the result parameters. In formulas, for a generic number of robots $R$:
+
+\begin{equation}
+\mathscr{L}_R(\lambda, \ell_i)=\lambda_1 \cdot \max(\ell_i)_N + \lambda_2 \cdot \sum(\ell_i)_N + \lambda_3 \cdot \sigma(\ell_i)_N
+\end{equation}
+
+Where subscript $N$ stands for normalised, and the best configuration will be the one that satisfies the following formula:
+
+\begin{equation}
+R_{best} = \arg\min_R \mathscr{L}_R(\lambda, \ell_i)
+\end{equation}
+ 
+By acting on the parameters we can set a  lexicographical order that meets the objective we want to achieve. The $\lambda$ parameters where obtained with a simple tuning based on the fact that the most important parameter is $\lambda_1$ since it weights $max(\ell_i)$ that defines the coverage completion time, and we want to minimize it. Then on a second level we want that the total energy spent by the swarm is minimized and at last we don't want a big disparity between paths lengths since it means that are some redundant robots. The parameters of the online and offline algorithms are not the same since in the online algorithms, till the coverage is completed, each robot performs the same number of steps, so $\lambda_3$ was set to a very small value with respect to the other two parameters.
+By taking advantage of the analysing performed in the previous section the simulations for this case will be run only for the Node Counting and VRP algorithms.
+In the following figures all the values in the graphs will be also represented as normalised. Due to the long execution times of the Node Counting (the deterministic solution of the Greedy is almost instant), the two algorithms will be compared for maps sizes not greater than 15x15.
+
+%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Node Counting}
+A common trend in all the plots is that the maximum path length $\max (\ell_i)$ always decreases with the increasing number of robots, which is an expected intuitive result. Nevertheless there is point where increasing the number of robots is no more convenient due to the consequent increase of the total paths length $\sum (\ell_i)$. An interesting result that can be observed in the profile of the total length curve is that there are some local minima that for larger sizes of the map occur in correspondence of a higher number of robots.
+
+%\input{tex/graphs/NC_cityMap}
+
+
+\input{tex/graphs/NC_5x5_normalised}
+
+
+\input{tex/graphs/NC_10x10_normalised}
+
+So for the Node Counting algorithm we have that for a 5x5 map the best number of robots is 6, for the 10x10 map is 7 and for the 15x15 map is 10. The bigger leap between the last two results derives from the fact that a linear increase in the map side obviously produces a quadratic increase in the map area, thus on the size of the navigation graph. Even though no precise pattern is emerging from the relationship between number of robots and size of the map, this results give anyway an idea about the order of magnitude of the robots necessary for coverage for increasing map size.
+
+
+\input{tex/graphs/NC_15x15_normalised}
+
+%%%%%%%%%%%%%%%%%%%
+
+
+\subsection{VRP with Floyd-Warshall}
+In the following figures are plotted the results for increasing number of robots and increasing map size using the VRP Greedy coverage algorithm.
+
+%\input{tex/graphs/VRP_FW_cityMap}
+
+\input{tex/graphs/VRP_FW_5x5_normalised}
+
+For the VRP algorithm we find that for a 5x5 map the best number of robots is 2, for the 10x10 map is 3 and for the 15x15 map is 5. We can clearly see how using this kind of algorithm the best number of robots is on average less than the one needed for Node Counting, that is a desirable property in term of resource saving.
+
+\input{tex/graphs/VRP_FW_10x10_normalised}
+
+\input{tex/graphs/VRP_FW_15x15_normalised}
+
+In figure \ref{fig:VRPFW_execTime} is presented a comparison plot for the algorithm execution time with an increasing size of the maps.  The longest execution time has been recorded for the computation of the path for one robot in a 40 by 40 free map, for a value of $7\e{2}$ seconds, roughly 12 minutes.
+
+\input{tex/graphs/Graph_VRP_FW_Compare}
+
+
+
+

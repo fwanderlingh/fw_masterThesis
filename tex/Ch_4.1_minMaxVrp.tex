@@ -1,0 +1,105 @@
+%\setcounter{section}{1}
+\section{$\min \max$ Vehicle Routing Problem}
+\label{s:vrp}
+
+Let's consider the problem of exploring an area with a swarm of quadcopters.
+
+
+Let $d_{vw}$ be the distance between the vertex $v$ and the vertex $w$.
+We can assume that $d_{vw}$ is the euclidean distance between the centre of the cell corresponding to the vertices  $v$ and $w$.
+Let $F = \{ 1, \ldots, i, \ldots, N\}$ be the set of quadcopter and let $s_i$ be the starting vertex  of the quadcopter $i$.
+A path $P_i$ is assigned to each quadcopter, consisting in an ordered sequence of vertices of $V$ to be visited.
+In particular the path of each quadcopter $i$ starts in $s_i$ and ends in $e_i$.
+Let $\ell(\cdot)$ be the function that returns the length of a path and, in particular, let $\ell(P_i) \equiv \ell_i$ be the length of the $i-$th path.
+
+The problem consist in planning the trajectories such that:
+
+\begin{enumerate}[label=\textbf{\arabic*.}]
+\item the distance travelled by  the quadcopter with the longest path is minimized
+
+\item every vertex is visited at least once
+\end{enumerate}
+
+In symbols:
+\begin{equation}
+\min \quad \mathcal{L} \label{e:obj}
+\end{equation}
+subject to:
+\begin{equation}
+\mathcal{L} \geq \ell(P_i) \quad \forall i \in F \label{e:max}
+\end{equation}
+\begin{equation}
+v \in \cup_{i \in F} P_i \quad \forall v \in V \label{e:allIncluded}
+\end{equation}
+
+
+Where \eqref{e:obj} is the \textit{objective function},
+the constraints \eqref{e:max} impose $\mathcal{L}$ as maximum length and
+the constraints \eqref{e:allIncluded} impose that every node is visited.
+
+\section{The Greedy Algorithm}
+\label{s:greedy}
+The greedy algorithm is a constructive procedure that iteratively produces a solution.
+At each iteration the algorithm takes an incomplete solution (potentially empty) and adds a vertex to produce a new solution.
+At every step the algorithm finds the vertex $v$ to be inserted, together with the path $i$ and the position $p$ in which the vertex has to be inserted.
+
+In particular there are two nested levels of optimisation.
+The first one is path-local and, for a given robot $i$, checks among the different insertion positions $p$ of a same vertex $v$ which one generates the shortest tentative path length.
+The second level of optimisation instead is global and checks among all the shortest $P_i$ paths which one generates the smallest increment with respect to the current longest path. The current length of the longest path will be identified with the letter $\mathcal{L}$.
+The choice is made by testing the $\delta_{vip}$ increment in the objective function and then choosing the configuration $<v,i,p>$ that produces the smallest increment.
+The complexity of the algorithm is then polynomial $O(\vert V \vert^2 N)$.
+
+In the basic version is convenient to use a single variable $\delta$ and a single triplet \mbox{$<v,i,p>$} to be updated at every iteration. We will call $P_i^{<v,i,p>}$ the path $P_i$ modified inserting the vertex $v$ in the position $p$.
+It is convenient, for an implementation point of view, to save the tentative path $P_i^{<v,i,p>}$ in a variable different from $P_i$ (it is enough just a single temporary path instead of one for each vehicle).
+
+\begin{algorithm}[ht]
+\begin{algorithmic}[1]
+\STATE{$U \leftarrow V$} \label{a:initU}
+\FORALL{$i \in F$} \label{a:initFor_i}
+\STATE{$P_i \leftarrow \left( s_i, e_i \right) $}\label{a:initP_i}
+\ENDFOR \label{a:endForiniti}
+\WHILE{$U \neq \emptyset$}\label{a:bigWhile}
+\STATE{$(\delta_{vip},\delta^{\text{best}}) \leftarrow + \infty$}\label{a:initDelta}
+\STATE{$\mathcal{L} = \max_{\forall i \in F} \ell(P_i)$}\label{a:initBigL}
+\STATE{choice $\leftarrow \emptyset$}\label{a:initChoice}
+ \FORALL{$v \in U$}\label{a:forV}
+  \FORALL{$i \in F$}\label{a:forI}
+  \STATE{$(\ell_{i}^{\text{ min}}, \ell_{i}^{\text{ tent}}) \leftarrow + \infty$}\label{a:initLength}
+   \FORALL{position $p \in P_i$}\label{a:forPos}
+   \STATE{$\ell_{i}^{\text{ tent}} = \ell(P_i^{<v,i,p>})$}\label{a:updateLtent}
+    \IF{$\ell_{i}^{\text{ tent}} < \ell_{i}^{\text{ min}}$}\label{a:checkLtent}
+    \STATE{$\ell_{i}^{\text{ min}} = \ell_{i}^{\text{ tent}}$}\label{a:updateLmin}
+    \STATE{$\delta_{vip} = \ell_{i}^{\text{ min}} - \mathcal{L}$}\label{a:calcDelta}
+    \IF{$\delta_{vip} < \delta^{\text{best}}$}\label{a:testDelta}
+     \STATE{$\delta^{\text{best}} \leftarrow \delta_{vip}$}\label{a:saveDelta}
+     \STATE{choice $\leftarrow <v,i,p>$}\label{a:saveChoice}
+    \ENDIF \label{a:endIfTestDelta}
+    \ENDIF
+   \ENDFOR \label{a:endForPos}
+  \ENDFOR \label{a:endForI}
+ \ENDFOR \label{a:endForV}
+ \STATE{add $v$ to $P_i$ in position $p$} \label{a:doIt}
+ \STATE{$U \leftarrow U \setminus choice.v$}  \label{a:removeV}
+\ENDWHILE \label{a:endBigWhile} 
+\RETURN{$P = \cup_{i \in F}P_i$} \label{a:return}
+\end{algorithmic}
+\caption{Greedy algorithm for the $\min \max$ VRP}\label{alg:greedy}
+\end{algorithm}
+
+Here is the algorithm in detail:
+the rows \ref{a:initU}--\ref{a:initChoice} are used to initialise all the variables.
+In particular the structure of $U$ is initialised (line \ref{a:initU}) with the set of all  the accessible nodes (not shown in the code: the start nodes $s_i$ are excluded).
+The paths are initialised with a sequence that begins and ends with the starting nodes  (\ref{a:initFor_i}--\ref{a:endForiniti}). 
+At the beginning of the main loop (line \ref{a:bigWhile}),
+the variable $\delta_{vip}$, containing the increments of the objective function is initialised at plus infinite, and the same thing goes for the best increment $\delta^{\text{best}}$ (line \ref{a:initDelta}).
+We then initialise $\mathcal{L}$, with the length of the longest path and reset the best choice (lines \ref{a:initBigL}--\ref{a:initChoice}).
+In the next three nested loops (lines \ref{a:forV}--\ref{a:endForV}) is tested the insertion of every vertex $v \in U$ in every possible position $p$ of every possible path $i$. For a given robot $i$, the length after the insertion, called $\ell_{i}^{\text{ tent}}$, is then compared to the smallest current length among all the insertions,  $\ell_{i}^{\text{ min}}$ (line \ref{a:checkLtent}).
+Note: the position to consider are the ones included between the position after the start and before the end. If the tentative length is smaller than the current best one it becomes the new best (line \ref{a:updateLmin}) and the increment is calculated with respect to the objective function previously evaluated, using the following formula:
+\begin{equation}\label{e:delta}
+\delta_{vip} = l_{i}^{\text{ min}} - \mathcal{L}
+\end{equation}
+The best $<v,i,p>$ triplet (line \ref{a:testDelta}) is saved (line \ref{a:saveChoice}) together with the corresponding increment (line \ref{a:saveDelta}).
+After all the for loops are executed the best insertion is applied (line \ref{a:doIt}) and the chosen vertex is removed from the list of unvisited vertices (line \ref{a:removeV}).
+When the unvisited set $U$ is empty (line \ref{a:endBigWhile}), the solution is returned (line \ref{a:return}).
+
+

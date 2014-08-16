@@ -1,0 +1,77 @@
+% !TEX TS-program = pdflatex
+% !TEX encoding = UTF-8 Unicode
+
+\documentclass[12pt]{report} % use larger type; default would be 10pt
+
+\usepackage[utf8]{inputenc} % set input encoding
+\usepackage{mystyle}
+
+
+\title{Master Thesis \\
+\bf{Swarm of autonomous MAVs in urban Search and Rescue applications} }
+\author{Francesco Wanderlingh}
+\date{September, 2014}
+
+
+\graphicspath{{img/}}
+\newcommand{\HRule}{\rule{\linewidth}{0.4mm}} % Change HRule default width
+\providecommand{\e}[1]{\ensuremath{\times 10^{#1}}} % Exponential notation
+
+%%% The "real" document content comes below...
+
+\begin{document}
+
+
+\nocite{*} %Include articles in bibliography even if they are not cited.
+
+
+\input{./tex/0_Title_WUT}
+\pagenumbering{gobble}
+\null\newpage
+
+
+\input{./tex/0.1_Authors_Declaration}
+\null\newpage
+\input{./tex/0.2_Abstract}
+\null\newpage
+
+\normalsize % Needed since the introduction of the abstract file was unexpectedly messing everything up
+
+\pagenumbering{roman}
+\tableofcontents
+\listoffigures
+\listoftables
+
+\clearpage
+
+\onehalfspace
+\pagenumbering{arabic}
+
+\input{./tex/Ch__1_Introduction}
+\input{./tex/Ch__2_Work_Overview}
+\input{./tex/Ch__3_Online_Algorithms}
+\input{./tex/Ch__4_Offline_Algorithms}
+\input{./tex/Ch__5_Results}
+\input{./tex/Ch__6_Experiments_With_Real_Quadcopters}
+\input{./tex/Ch__7_Additional_Details}
+
+\begin{appendices}
+\input{./tex/Appendix}
+\end{appendices}
+
+
+\singlespace
+\bibliographystyle{plain} % Arrange the bibliography in order of appearance
+\bibliography{MasterThesis}
+
+
+\end{document}
+
+%   VARIOUS SNIPPETS OF CODE:
+
+%\[
+%\left|\sum_{i=1}^n a_ib_i\right|
+%\le
+%\left(\sum_{i=1}^n a_i^2\right)^{1/2}
+%\left(\sum_{i=1}^n b_i^2\right)^{1/2}
+%\]

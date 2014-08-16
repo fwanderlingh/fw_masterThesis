@@ -1,0 +1,59 @@
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+	\begin{axis}[
+%		height=9cm,
+%		width=9cm,
+		grid=major,
+                legend style = {at={(1,1)}, anchor=north west},
+		xlabel=\#Robots,
+		ylabel=Normalised Length
+		smooth,
+		tension=0.3
+	]
+
+	\addplot coordinates {
+(1, 1.00)
+(2, 0.25)
+(3, 0.13)
+(4, 0.13)
+(5, 0.06)
+(6, 0.00)
+(7, 0.00)
+(8, 0.00)
+(9, 0.00)
+(10, 0.00)
+	};
+	\addlegendentry{$\max(\ell_i)$}
+
+	\addplot coordinates {
+(1, 0.00)
+(2, 0.04)
+(3, 0.19)
+(4, 0.31)
+(5, 0.42)
+(6, 0.58)
+(7, 0.69)
+(8, 0.92)
+(9, 0.96)
+(10, 1.00)
+	};
+	\addlegendentry{$\sum(\ell_i)$}
+
+	\addplot coordinates {
+(1, 0.00)
+(2, 0.00)
+(3, 0.29)
+(4, 0.92)
+(5, 0.94)
+(6, 0.87)
+(7, 0.80)
+(8, 0.77)
+(9, 0.94)
+(10, 1.00)
+	};
+	\addlegendentry{$\sigma(\ell_i)$}
+	\end{axis}
+\end{tikzpicture}
+\caption[Perform. indexes increasing the \#robots, 5x5 grid using VRP]{Performance indexes increasing the num. of robots, 5x5 grid using VRP}
+\end{figure}

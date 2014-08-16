@@ -1,0 +1,65 @@
+\section{Algorithms Comparison}
+
+\subsection{Single robot behaviour}
+\label{sec:singleRob}
+Before jumping to the multi-robot case let's make some considerations on the single-robot coverage. The extension of a single-robot coverage algorithm to the multi-robot case is not straightforward and at a first glance some of the results in the next sections may appear counterintuitive. For example as stated before LRTA* suffers a performance degradation in the multi-robot case. So, even if the scope of this thesis is focused on multi-robot coverage, to prove that the algorithms developed are fully functional and have a behaviour congruent with the result found in literature, simulations were performed also for a single-robot configuration using a 4x4 grid map. 
+
+
+Since an interesting trend can be observed when changing the number of minimum visits per vertex we tested the algorithms for 4 different values of $\min c$.  The results are presented in table \ref{tab:singleRobResults}.
+
+\input{./tex/tables/singleRob_LRTA_NC_Results}
+
+As we can see the LRTA* always perform equal or better than Node Counting. It is interesting to notice how approaching the single coverage, the difference between NC and LRTA* becomes less considerable, becoming eventually equally for \mbox{$\min c=1$}.
+Comparing Edge Count and PatrolGRAPH* we can see how for \mbox{$\min c>1$} the latter always completes the patrolling in fewer steps, while for the single coverage instead Edge Counting turns out to be more efficient. This happens since, as can be observed in appendix \ref{app:firstSteps}, in the first steps of the algorithm PG* tends to make the robot go back to already visited vertices. The reason behind this behaviour relies in the fact that having computed a Probability Transition Matrix that ensures every vertex to be visited with a probability $p=\sfrac{1}{N}$, PG* in the initial transient phase spends more time visiting vertices with a low number of edges to make coincide the desired visit frequency with the actual one.
+Apart from this we can notice how the paths length for NC and LRTA* are always smaller than the ones resulting from EC and PG*, and this is also true for the multi-robot case as we will see in the next sections, making clear that vertex-count oriented algorithms are more suitable for coverage purposes.
+
+%%%%%%%%%%%%%%%%%%
+
+\subsection{Node Counting}
+
+In table \ref{tab:NC_results} are presented the results for the Node Counting algorithm.
+
+\input{./tex/tables/NC_results_table}
+
+Despite it is the simplest of the algorithms considered it is surprisingly good for multi-robot coverage. For the simulation in Set 1 of increasing map size with $\upomega=1$ the LRTA* is the only other algorithm with similar performances, although in the 8x8 grid NC still performs better. Also for Sets 2 and 3 the two algorithms get similar results, but for the 6 robots case (Set 3), the Node Counting completes the coverage in fewer steps. 
+
+%%%%%%%%%%%%%%%%%%
+
+\subsection{Learning Real-Time A*}
+
+In table \ref{tab:LRTA_results} are presented the results for the Learning Real-Time A* algorithm. As stated in section \ref{sec:LRTAstar} the update-rule of LRTA* is not triggered till the robot reaches the target vertex and this entails that multiple robots can make the same choice consequently not contributing in spreading the robots across the map. This disadvantage clearly emerges from the simulations where in almost all the cases the Node Counting achieves better results. This becomes even more noticeable in Set 4 for big values of $\min c$ where even if the difference between $\max (\ell_i)$ is not that big, thinking in terms of total energy spent by the swarm, $\sum(\ell_i)$, in LRTA* is significantly bigger (NC 338 vs. LRTA* 456).
+
+\input{./tex/tables/LRTA_results_table}
+
+
+%%%%%%%%%%%%%%%%%%
+
+\subsection{Edge Counting}
+
+The first thing we notice from the results in table \ref{tab:EC_results} is that average number of visits, and consequently also total length, of the Edge Counting algorithm is generally higher for any of the 4 test cases with respect to the previous to algorithms. The results are more in line with PatrolGRAPH* algorithms ones, also for what regards the $\sigma(\ell_i)$ that in Set 4 reaches values up to $\sigma=4.08$, while for the same set the maximum for LRTA* is $\sigma=1.6$. In general it comes out that for a single-coverage task (Sets 1-2-3) on average the Edge Counting is faster than PG*.  It is worth reminding anyway that in none of the previous coverage algorithm we have control over the frequency distribution of visits, so it is not possible for example to define an ``region priority'', which can instead be achieved using the PatrolGRAPH*.
+
+\input{./tex/tables/EC_results_table}
+
+\input{./tex/tables/PG_results_table}
+
+%%%%%%%%%%%%%%%%%%
+
+\subsection{PatrolGRAPH*}
+
+Observing the PatrolGRAPH* results in table \ref{tab:PG_results} we find that the values for Set 3 are against the trend of all the previous algorithms. While previously for growing $\upomega$ the $\max(\ell_i)$ index is decreasing, in the PG* case smaller $\delta(G)$ cause longer coverage paths. This behaviour can be explained with the same reasoning done for the single-robot case in section \ref{sec:singleRob} recalling that the PG* algorithm will spend more time on vertices with small number of edges to ensure that on a short term time horizon the expected and actual frequency distribution concide. It is worth noting that on the long run the PG*, ensuring a uniform frequency distribution, performs better than Edge Counting as we can see the case of $\min c=10$ of Set 4.
+
+
+%%%%%%%%%%%%%%%%%%
+
+\subsection{VRP Greedy with Floyd-Warshall}
+
+For the reasons explained in the previous chapter regarding computation time and quality of the solutions, the VRP Greedy with Floyd-Warshall is the only offline algorithm that will be used in the simulations. The results are presented in table \ref{tab:VRP_FW_results1}. Since the result of the Greedy algorithm is deterministic there is no point in considering $\min c>1$, as the total path length can be easily evaluated by multiplying the result indexes of the single-coverage case by the number of coverages.
+
+\input{./tex/tables/VRP_FW_results_table}
+
+Comparing the VRP results with the Node Counting ones, which has been found to be the simplest yet the best algorithm so far, we can observe how Node Counting is surprisingly powerful. There are few cases for which VRP is better than NC, and this occur occur mainly with big maps (8x8 grid) and low $\upomega$. We can observe the same results also for the simulation in the next section, and deduce then that the Greedy VRP performs better in obstacle-free maps, with a bigger ``manoeuvring space''.
+
+\subsection{Comparison Conclusions}
+From the analysis carried in this chapter it emerged how on average the best solution for the single-coverage multi-robot problem is produced by the Node Counting algorithm. First of all is interesting to notice that a (simple) offline method (no heuristic post-optimisation), does not necessarily produce a better solution than a (simple) online method. A very basic swarm rule (NC) can achieve better results than the a fairly complex routing algorithm and also, being an online method, NC is more flexible and suitable for autonomous distributed systems than VRP.
+This result against the trend of the results found in literature for the single-robot coverage makes clear how the extension of current coverage approaches to the multi-robot case is not trivial and requires an accurate study on communication protocols between robots and collective behaviour in general.
+

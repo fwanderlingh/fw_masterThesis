@@ -1,0 +1,32 @@
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+	\begin{axis}[
+%		height=9cm,
+%		width=9cm,
+		grid=major,
+                legend style = {at={(1,1)}, anchor=north west},
+		xlabel=\#Robots,
+		ylabel=Normalised Length,
+		smooth,
+		tension=0.3
+	]
+
+	\addplot coordinates {
+
+	};
+	\addlegendentry{Max Lenght}
+
+	\addplot coordinates {
+
+	};
+	\addlegendentry{Total Lenght}
+
+	\addplot coordinates {
+
+	};
+	\addlegendentry{Lenght $\sigma$}
+	\end{axis}
+\end{tikzpicture}
+\caption{Variation of the performance indexes increasing the number of robots, for the 5x5 grid using the LRTA* algorithm}
+\end{figure}

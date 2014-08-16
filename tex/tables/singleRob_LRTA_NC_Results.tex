@@ -1,0 +1,34 @@
+% Please add the following required packages to your document preamble:
+% \usepackage{booktabs}
+% \usepackage{multirow}
+\begin{table}[H]
+\centering
+\begin{tabular}{@{}ccc@{}}
+\toprule
+Algorithm                                    & $\min c$  & $\ell(P)$           \\ \midrule
+\multirow{4}{*}{Node Count} &   10        &   178             \\
+                                         &   5          &     98             \\
+                                         &  2           &    51              \\
+                                         &  1           &    17              \\ \midrule
+\multirow{4}{*}{LRTA*}     &  10          &   160             \\
+                                        &   5           &   79                \\
+                                        &   2           &   35                \\
+                                        &   1           &   17                 \\ \bottomrule
+\end{tabular}
+\qquad \qquad%adds some space between tables
+\begin{tabular}{@{}ccc@{}}
+\toprule
+Algorithm                               & $\min c$  & $\ell(P)$           \\ \midrule
+\multirow{4}{*}{Edge Count} &   10      &   250              \\
+                                         &   5          &     134            \\
+                                         &   2          &    75               \\
+                                         &   1          &   34                \\ \midrule
+\multirow{4}{*}{PatrolGRAPH*}&   10   &    178            \\
+                                        &   5          &   108               \\
+                                        &   2          &   57                 \\
+                                        &   1          &   47                 \\ \bottomrule
+\end{tabular}
+\caption{Single-robot comparison for a 4x4 map and $\upomega=0$}
+\label{tab:singleRobResults}
+\end{table}
+

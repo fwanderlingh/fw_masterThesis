@@ -1,0 +1,22 @@
+\chapter{Additional details}
+
+
+\section{About the code}
+
+In this section a couple of technicalites are described for who is interested in deepening the knowledge of the software implementation. There is somehow a logic beyond the name of the source files: all the files that start with the \emph{quad} prefix are controlling the quadcopters in the simulator via ROS and are consequently executable files. To plan the paths the executables  make use of libraries implemented in the relative classes. For example the node counting algorithm is implemented in the \texttt{NodeCounting.cpp} class, used by  \texttt{quadNodeCount.cpp} to control the movements of the quadcopters in the simulator.
+All the code was finally compiled with the gcc optimization level ``-O3'' enabled, by setting in the \texttt{CMakeList.txt} the \emph{release} build type.
+The code is designed to be fairly flexible making large use of input arguments in order easily run the simulation using different parameters without having to recompile the code each time. The input parameters for the online and offline algorithms (\texttt{quad*.cpp} files) are slightly different due do the different nature of the two, and are listed in table \ref{tab:inputArgs}.
+
+\input{./tex/tables/inputArguments}
+
+As we can see in the offline case the parameters are spread between the controller and the kernelNode that generate the paths. The \emph{Control Mode} argument is used to change the waypoint planning algorithm for switching between the simulator and the real multi-copters control.
+
+\section{Open Licensing}
+
+\begin{aquote}{L. Torvalds}
+``In open source, we feel strongly that to really do something well, you have to get a lot of people involved.''
+\end{aquote}
+
+Following the attitude which inspired Torvalds, and the \emph{not reinventing the wheel} paradigm, all the code developed in this thesis is released with open source licenses such as MIT License and BSD License. Mixing this two licenses is possible since they are both ``GPL-compatible''. For more info visit \href{http://opensource.org/licenses}{OSI: Licenses} and \href{http://en.wikipedia.org/wiki/License_compatibility}{License Compatibility}. The source files can be found on GitHub in the \href{https://github.com/merosss/VRepRosQuadSwarm}{VRepRosQuadSwarm} repository.
+
+The same attitude has been followed for the software tools used: Ubuntu, ROS, Coppelia Robotics VREP Simulator and LibreOffice are all open source projects. The 3D models used to create the simulation environment are free models, downloaded at \href{http://tf3dm.com/}{TF3DM}. As you probably have already noticed this thesis is written in \LaTeX, also distributed under a free software license.

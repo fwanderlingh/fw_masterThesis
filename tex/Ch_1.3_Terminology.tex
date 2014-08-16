@@ -1,0 +1,30 @@
+\section{Terminology and Notation}\label{sec:terminology}
+
+Due to the simultaneous use of the ROS network and graph theory, I will always try to use two distinct names when referring to nodes and vertices. In particular in the ROS environment is formed of nodes and a graph has vertices.
+
+That said, every terrain can be modelled as a undirected graph, by sampling the area using a grid.
+The grid is described by a navigation graph $G_N=(V,E)$, the \emph{navigation graph}, where $V$ is a set of vertices and $E$ is a set of edges. Each edge that connects vertex $i$ to vertex $j$ is represented as $e_{ij}=e(i,j)$. Let be $N(v)$ the set of vertices adjacent (connected through an edge) to $v$. The maximum degree (number of edges incident to a vertex) of the graph $G$ will be denoted by $\Delta (G)$ and the minimum degree by $\delta (G)$.
+
+
+\theoremstyle{definition}
+\begin{definition}{\textbf{\textit{Eulerian State Spaces}}}\label{cellDec}
+A state space is Eulerian if  there are as many actions  that leave a state as there are actions that enter the (same) state.
+\end{definition}
+
+Since an undirected edge is equivalent to one incoming and one outgoing edge, all undirected state spaces are Eulerian.
+
+The navigation graph is better represented through a strongly connected, oriented graph $\hat{G}_N$, derived from $G_N$ by doubling all its edges and assigning them opposite directions. 
+$E_i=\{e_{ij}\} \neq 0$ is the finite, nonempty set of directed edges that leave vertex $v_i \in V$.  $|E_i|$ is the dimension of the set, i.e., the number of edges departing from $v_i$.
+
+$R=\{r_i\}$ is a set of $M$ robots. Robots are allowed to move in the workspace from $v_i$ to $v_j$ in $\hat{G}_N$ only if $e_{ij} \in E_i$, i.e., if the two vertices are adjacent. 
+${\bm{\lambda}}=[\lambda_1,\cdots,\lambda_N]^T  \in \Re^N$ is a vector which describes the average visiting rate to each vertex $v_i \in S$, expressed as \textit{number of robots} per \textit{time unit}. %\Re$).
+${\bm{\lambda}}^*=[\lambda_1^*,\cdots,\lambda_N^*]^T  \in \Re^N$, $0 \le \lambda_i^* \le 1$ and $\sum \nolimits_1^N \lambda_i^* =1$ is a vector which describes the prescribed frequency distribution of visits. 
+
+Similarly to \cite{koenig2001}, the expression ``one-of $X$'' returns randomly one of the elements of $X$. The notation $succ(v,e)$ returns the vertex linked to $v$ through the edge $e$. The expression $c(v)$ represents the count value associated with to the vertex $v$, initially set to zero for all $v \in V$.
+
+Let be $U$ a structure containing all the vertices of the graph still to be visited, i.e., the \emph{unvisited set}. At last et $\ell(\cdot)$ be the function that returns the length of a path and, in particular, let $\ell(P_i) \equiv \ell_i$ be the length of the $i-$th path.
+
+
+
+
+

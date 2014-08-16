@@ -1,0 +1,52 @@
+\chapter{Simulations and Results}
+
+The five algorithms where tested on different kind of maps and compared on three major performance indexes. Since our goal is to perform the coverage in the shortest time possible, minimize the total energy spent and also don't have redundant robots that do not produce a significant contribution to the coverage, the comparison criteria are based on:
+\begin{itemize}
+\item  Longest path (among all the robots) - $\max(\ell_i)$
+\item  Total length of paths (sum over all the robots) -  $\sum(\ell_i)$
+\item  Standard deviation of the paths lengths - $\sigma(\ell_i)$
+\end{itemize}
+
+The experimental phase is divided in two sections. In the first phase we analyse the algorithms behaviour in maps with random obstacles and compare the performances. The aim is to check among the different algorithms which one performs better in each situation. In the second phase instead the aim is to identify the optimal number of robots for a given map size so all the algorithm are tested varying the number of robots. The maps considered in this second phase are obstacle-free.
+For a navigation graph $G_N(E,V)$ the standard coverage is said to be completed when all the vertices have been visited at least once, in formulas:
+
+\begin{equation}
+\min_i c(v_i) \geqslant 1 \qquad \forall v_i \in V
+\end{equation}
+
+Since some online algorithms due to their nature exhibit a more efficient behaviour on multiple coverages, i.e. patrolling, these algorithms have been tested also for $\min c \geqslant C$ where $C$ is greater than one.
+
+For the first phase on grid maps with random obstacles, let's differentiate the three types of maps used in the algorithm by defining an obstacle index $\upomega$. The reference figures are Fig. \ref{fig:obstGrid1}, Fig. \ref{fig:obstGrid2} and Fig.\ref{fig:obstGrid3}.
+
+\input{tex/figures/obstacles_types}
+
+Basically for $\upomega=0$ we have an obstacle-free map. For  $\upomega=1$ we have a map without internal holes and $\delta (G)=2$. For $\upomega=2$ we have a map with internal holes and still $\delta (G)=2$. For  $\upomega=3$ we have a map with internal holes and $\delta (G)=1$.
+Tp test the algorithms the following simulation were performed:
+\begin{description}
+\item[\textbf{Set 1.}] Increasing map size: 4x4 Map, 6x6 Map, 8x8 Map
+\item[\textbf{Set 2.}] Increasing $\upomega$:  $\upomega=1$, $\upomega=2$,  $\upomega=3$
+\item[\textbf{Set 3.}] Increasing number of robots: 2 robots, 4 robots, 6 robots
+\item[\textbf{Set 4.}] Increasing number of min-count per vertex: \mbox{$\min c=1$}, \mbox{$\min c =2$}, \mbox{$\min c =5$}, \mbox{$\min c =10$}
+\end{description}
+
+For each grid five different samples where tested and the result reported in the tables is the mean of the five simulations.
+
+In the second phase to identify the best number of robots, three grid-maps of increasing size were tested, in particular the grids are: 5x5, 10x10, 15x15. For all the grids ten different simulations were performed increasing the number of quadcopters used, from a single robot coverage to a multi-robot coverage with 10 agents. In the following figures are presented 2 examples of coverage.
+
+\input{tex/figures/finalPaths_sim}
+
+\input{tex/Ch_5.1_Algorithms_comparison}
+
+\pagebreak
+
+
+\input{tex/Ch_5.2_Finding_optimal_num}
+
+\pagebreak
+
+
+\section{Conclusions}
+We have seen how for the multi-robot coverage problem the elementary Node Counting algorithm resulted to be one of the most efficient solutions, with final paths lengths even comparable with the VRP Greedy ones. The most interesting results being the one of the ``vertex oriented'' algorithms Node Counting and LRTA*, the latter suffering for the intrinsic inefficient mechanism implemented for the update rule in the multi-robot case (section \ref{sec:LRTAstar}). ``Edge oriented'' algorithm as Edge Counting and PatrolGRAPH* do not seem to fit the needs of the coverage problem as they always end up in longer paths with respected to the vertex oriented algorithms.
+The VRP algorithm seems anyway to achieve the overall best results in very large obstacle-free maps, which can be the case for high altitude flight. An undeniable advantage of the VRP algorithm also is that the solution is almost instant giving us an idea of the total coverage time, a very useful information in SAR applications.
+
+

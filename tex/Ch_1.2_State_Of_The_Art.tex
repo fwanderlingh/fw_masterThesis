@@ -1,0 +1,45 @@
+\section{State of the art}
+
+Many works have been present in the area of research dealing with the coverage problem, either offline or online, aiming to accomplish static or dynamic coverage, using single or multi-robot approach, and assuming known and unknown environments. In this paragraph we will review some of the solutions found in literature as a starting point for the research developed in this thesis.
+
+
+\subsection{Coverage algorithms}
+
+Regarding static coverage in \cite{5152815} is presented a distributed control strategy for deploying hovering robots with multiple downward facing cameras to collectively monitor an environment. Information per pixel is proposed as an optimization criterion for multi-camera placement problems  to derive a specific cost function for multiple downward facing cameras. The cost function leads to a gradient-based distributed controller for positioning the robots, experimented with three with three AscTec Hummingbird quad-rotor robots. Although previous works have been presented previously, in which a Voronoi partition of the environment is involved, this approach to the contrary relies on the fields of view of multiple cameras to overlap with one another.
+
+A novel approach to static coverage is presented in \cite{5649249} where propose a cooperative algorithm to maximize the monitored areas in a 2D non-convex environment, by using a team of mobile robots. In particular, it deals with the maximization of an area monitored by a team of robots using vision sensors. A learning strategy is presented, able to provide a coordinated control algorithm for all the team members. In particular, the proposed approach is based on the Cognitive-based Adaptive Optimization (CAO) methodology.
+
+Usually, regarding dynamic coverage, to find optimal paths using an offline algorithm most of the works in literature model the problem as one of the following one: \emph{Travelling Salesman Problem}, \emph{Chinese Postman Problem}, \emph{Watchman route problem} or \emph{Vehicle Routing Problem}. All of them aim to find the shortest path to cover all the vertices of a given graph by minimizing the travelled distance, but they slightly differ for the constraint they impose on the travelled path.
+
+In \cite{ChongCoverage} is firstly analysed the space decomposition problem and then, after developing a recursive strategy for completely visit a set of connected rooms, a \emph{parallel swath} is used to perform the complete coverage of a single room, which consist in a simple back and forth exploration as shown in figure \ref{fig:covTypes}.
+
+In \cite{navidCovAlgs} a series of coverage patterns are considered among which: parallel swath, contour swath with inward shift, random walk and outward spiral. In this work is claimed however that this kind of paths are not feasible for nonholonomic car-like vehicle due to the fact that the trajectories contain
+discontinuities in the heading which requires the vehicle to turn on the spot, but since we are using micro aerial vehicles this constraint does not apply. In the same work is also addressed the problem of covering occasional gaps and the \emph{Travelling Salesman Problem} (TSP) is proposed as a solution imposing the constraint that the generated paths to the uncovered areas should be as short as possible to minimize overlapped coverage.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.7\textwidth]{various_coverages_1}
+\caption{Various dynamic coverage patterns}
+\label{fig:covTypes}
+\end{figure}
+
+In \cite{MannadiarR10} is introduced a new algorithm based on the Boustrophedon cell decomposition. The presented algorithm encodes the areas (cells) to be covered as edges of the Reeb graph. The primary contribution of their algorithm is using the solution to the CPP in order to find the optimal order, in terms of distance travelled, in which the cells are covered. Then, given the Reeb graph an \emph{Euler tour} is calculated, that is a circuit that covers every edge in a graph exactly once. To cover the interior of a the cell a simple back-and-forth motion is used. The experiments were carried out by simulating a Pioneer robot to perform coverage of all the available free space, in different classes of environments as test cases.
+
+In \cite{Naftos:1992} is investigated the \emph{Watchman Route Problem} (WRP), that is: find a shortest route such that each point in the polygon P is $d$-visible (i.e., visible and at most $d$ away) from some point along the route. For simple polygons when there is a visibility range d and we are interested in viewing the whole interior of P. Two versions of the WRP are presented. Find a shortest route such that either \emph{(a)} each point in the boundary of the polygon (d-watchman problem) or \emph{(b)} each point in the polygon (d-sweeper problem), is $d$-visible.
+route. An approximation algorithm for the TSP in simple grids that obtains solutions within 33\% of the optimum. This also provides approximate solutions for the d-sweeper problem.
+
+For the class of online algorithms, the most common approaches will be discussed more in detail in the body of the thesis, but let's firstly go briefly through all of them.
+The simplest online algorithm is the so called \emph{Node Counting}. Basically this algorithm count the number of visits in the various positions of the terrain to be covered and chooses to go to the location with the smaller number of visits.
+
+In \cite{Ishida:1998:RSA:608597.608621} can be found a good review of the \emph{LRTA*}. The logic behind this algorithm is similar to the Node Counting one, but in this case the value associated to a map position is not just its visit count but a cost value that is used to guide the robots near the unvisited locations. For a comparison between Node Counting and LRTA* see \cite{koenig2001}.
+
+In \cite{Koenig96easyand} the \emph{Edge Counting} algorithm is presented. In this case the count used for making decisions is the edge traversal count of the departing links, from the current position, to the next reachable ones. Random walks are bad search algorithms since they do not remember were they have already searched but it be can easily derived a real-time search algorithm that shares many properties with random walks, but has finite complexity - basically, by “removing the randomness” from random walks. In \cite{506507}, is proved that edge counting always reaches a goal state with a finite number of action executions, but its complexity can be exponential in the size of the state space.
+
+In \cite{5711675} the \emph{PatrolGraph*} algorithm is introduced. It takes into account both the number of visits and as node count and the edge traversals. The algorithms has been specifically designed to solve the problem of Multi–Robot Controlled Frequency Coverage (MRCFC), in which a team of robots are requested to repeatedly visit a set of pre–defined locations of the environment according to a specified frequency distribution. It is proven to
+be statistically complete as well as easily implementable on real, marketable robot swarms for real–world applications.In this thesis we will exploit the properties of this algorithm to perform a Multi–Robot Uniform Frequency Coverage (MRUFC), so that all the locations of the map will be visited uniformly.
+
+
+\input{tex/Ch_1.2.1_Space_decomposition}
+
+
+
