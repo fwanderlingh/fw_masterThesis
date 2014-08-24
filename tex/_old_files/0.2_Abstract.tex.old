@@ -1,0 +1,28 @@
+\begin{center}
+\Large {\bf{Swarm of autonomous MAVs in Urban Search and Rescue applications}}\\
+\large {by  \\
+Francesco Wanderlingh}
+\end{center}
+
+\vskip 1cm
+\Large {\textbf{Abstract}} \\
+
+\large{
+In the framework of swarm robotics involved in search and rescue applications, the main purpose of this thesis is to investigate complete terrain coverage algorithms. These kinds of algorithms are intended in the first place to perform a fast monitoring by means of aerial imaging, but many other applications are possible. Two main classes can be identified in the algorithms developed for the terrain coverage: online and offline coverage methods. For the online class the algorithms taken into account are Node Counting, Learning Real-Time A*, Edge Counting and PatrolGRAPH*. For the offline class instead the coverage problem was formulated as a Vehicle Routing Problem and solved with a greedy approach. In a first phase the algorithms were tested in a 3D simulation environment and a large number of results was collected and compared. Finally the whole framework was tested performing the coverage using real multi-copters. }
+\clearpage
+\null\newpage
+
+\begin{center}
+\Large {\bf{Robotyka roju w Poszukiwaniu i Ratownictwie miejskim z zastosowaniem autonomicznych MAV}}\\
+\large {przez  \\
+Francesco Wanderlingh}
+\end{center}
+
+\vskip 1cm
+\Large {\textbf{Streszczenie}} \\
+
+
+\large{
+W strukturze robotyki roju, wdrażanej do poszukiwania i działań ratunkowych, głównym celem tezy jest analiza algorytmów kompletnego pokrycia terenu. Ten rodzaj algorytmów jest jw pierwszej kolejności przeznaczony do szybkiego monitorowania poprzez obrazowanie antenowe, aczkolwiek możliwe są różne inne aplikacje. Wyróżniamy dwie główne klasy algorytmów dla przeszukania terenu: metody online i offline. Do klasy online zaliczamy: Node Counting, Learning Real-Time A*, Edge Counting and PatrolGRAPH*. W klasie offline problem przeszukiwania został sformułowany jako problem marszrutyzacji i rozwiązano go za pomocą zachłannego podejścia. W pierwszej fazie algorytmy były testowane w symulacji środowiska 3D - uzyskano i porównano w ten sposób dużą ilość wyników. Ostatecznie cała struktura była testowana poprzez przeprowadzenie pokrycia za pomocą multi-copter’ów.
+}
+\clearpage

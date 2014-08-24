@@ -2,22 +2,21 @@
 
 \section{General motivation and objectives}
 
-When natural disaster occur, a prompt intervention is a key factor. In order to organize effective rescue missions, it is fundamental to quickly gather information about collapsed buildings, damaged roads and, above all, victims. To this extent, autonomous Micro Aerial Vehicles (MAVs) are a promising technology to survey the stricken area.
+When natural disaster occurs, a prompt intervention is a key factor. In order to organize effective rescue missions, it is fundamental to quickly gather information about collapsed buildings, damaged roads and, above all, victims. To this extent, autonomous Micro Aerial Vehicles (MAVs) are a promising technology to survey the stricken area.
 
 The introduction of unmanned aerial vehicles (UAVs) has revolutionized military operations all over the world. In the past year, the U.S. reached an important milestone in that Air Force now has more UAVs than manned aircraft, while Israel and the United Kingdom had recent significant advances in UAV heavy-lift capacity \cite{6099676}. These advances are not only limited to the military as the international civil sector also looks to such unmanned technologies to aid operations such as fighting forest fires, undersea exploration, monitoring wildlife, inspecting bridges, and supporting first responders such as police and rescue organizations. UAV expenditures alone are predicted to more than double in the next ten years, and are expected to exceed \$80 billion \cite{6099676}.
 So far this century there have been more than 1000 fatal earthquakes causing a total loss of life exceeding 1.5 million people. Reducing the loss of life is the primary priority of most earthquake protection strategies, and yet the processes that contribute to death tolls and the best strategies for reducing injury levels are not well understood. According to \cite{coburn1994death}, structural collapses are responsible for 75\% of deaths in earthquakes. The factors influencing the number of victims per building collapse fall into five major categories M1 to M5. Being M3 the “occupants trapped by collapse”.
 
-In all three cases it’s evident how a flying vehicle can be useful to reach the areas struck by the earthquake. When disasters such as this occur, a prompt intervention is a key factor: the probability of saving lives decreases dramatically after the initial hours. In order to organize effective rescue missions, it is fundamental to quickly gather information about collapsed buildings, damaged roads and, above all, victims. To this extent, autonomous Micro Aerial Vehicles (MAV) are a promising technology to survey the stricken area. 
-These applications usually require complete autonomy in navigation, small size of the air vehicle to access also confined out and indoor spaces and low power consumption for extended operation times. 
+In all three cases it’s evident how a flying vehicle can be useful to reach the areas struck by the earthquake. 
+These applications usually require complete autonomy in navigation, small size of the air vehicle to access also confined out and indoor spaces and low power consumption for extended operation times. The branch of swarm robotics is relatively new, and the application of swarm robotics to flying vehicles is even more innovative. The capacity of having multiple robots with such mobility in fact opens new possibilities with respect to terrain exploration. Complete coverage of algorithms are intended in the first place to perform a fast monitoring by means of aerial imaging, but many other applications are possible.
 
+In the framework of swarm robotics involved in search and rescue (SAR or S\&R) applications, the main objectives of this thesis research are:
+\begin{itemize}
+\item Analyse and implement several complete coverage algorithms
+\item Compare the resulting coverages to identify the most efficient algorithm
+\end{itemize}
 
-In the framework of swarm robotics involved in search and rescue (SAR or S\&R) applications, the main purpose of this thesis research is to investigate complete coverage algorithms. These kind of algorithms are intended in the first place to perform a fast monitoring by means of aerial imaging, but many other applications are possible.
-
-The branch of swarm robotics is relatively new, and the application of swarm robotics to flying vehicles is even more innovative. The capacity of having multiple robots with such mobility in fact opens new possibilities with respect to terrain exploration.
-
-I developed in parallel two different approaches: real-time and optimised coverage. They fit different hardware and swarm-type requirements, but they share the same mathematical base, graph theory.
-
-To test the algorithms a 3D simulation environment was created and the simulated robots are controlled using the ROS robotic platform. This was mandatory choice for testing online algorithms, but nevertheless a good way to visualise the results for pre-processed optimised coverage.
+Two different approaches have been developed in parallel: online and offline coverage coverage algorithms. They fit different hardware and swarm-type requirements, but they share the same mathematical base, graph theory. To test the algorithms a 3D simulation environment was created and the simulated robots are controlled using the ROS robotic platform. This was mandatory choice for testing online algorithms, but nevertheless a good way to visualise the results for pre-processed optimised coverage.
 The simulated environment has been represented as a graph using a convention shown in the next chapter, on which the algorithms operate to perform the coverage. As a last step the algorithms were also tested with success on a pair of real multi-copters available in the laboratory, proving that a consistent framework is available for immediate application.
 
 

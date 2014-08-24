@@ -1,0 +1,69 @@
+%Quadcopters paths:
+%#0: 0 1 2 5 8
+%#1: 0 3 4 7 6
+
+%Quadcopters paths:
+%#0: 0 1 2 1 4 
+%#1: 0 3 4 5 8 7 6
+
+\begin{figure}[H]
+  \begin{minipage}[b]{0.5\linewidth}
+    \centering
+    \begin{tikzpicture}
+	\begin{axis}[
+		height=6cm,
+		width=6cm
+	       ]
+
+	\addplot coordinates {
+(0, 0)
+(5, 0)
+(10, 0)
+(10, 5)
+(10, 10)
+	};
+	\addplot coordinates {
+(0, 0.5)
+(0, 5)
+(5, 5)
+(5, 10)
+(0, 10)
+	};
+	\end{axis}
+\end{tikzpicture}
+    \caption{Coverage (a)}
+    \label{fig:asctec_double_a}
+    %\vspace{4ex}
+  \end{minipage}
+  \begin{minipage}[b]{0.5\linewidth}
+    \centering
+        \begin{tikzpicture}
+	\begin{axis}[
+		height=6cm,
+		width=6cm
+		]
+
+	\addplot coordinates {
+(0, 0)
+(0, 5)
+(5, 5)
+(10, 5)
+(10, 10)
+(5, 10)
+(0, 10)
+	};
+	\addplot coordinates {
+(0, -0.5)
+(5, -0.5)
+(10, -0.5)
+(10, 0.5)
+(5, 0.5)
+(5, 5)
+	};
+	\end{axis}
+\end{tikzpicture}
+    \caption{Coverage (b)}
+    \label{fig:asctec_double_b}
+   % \vspace{4ex}
+  \end{minipage}
+\end{figure}

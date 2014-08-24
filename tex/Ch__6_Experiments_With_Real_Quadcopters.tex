@@ -24,7 +24,7 @@ As a final step the algorithms were tested using two high-end quadcopters availa
 \end{figure}
 
 
-They both mount an on-board computer which runs Linux and Wi-Fi adapter through which is performed all the communication. For the robot dynamic control system the ETHNOS \cite{ethnos2000} real-time software framework is used. The ETHNOS environment is composed of a dedicated distributed real-time operating system (developed as an extension to Linux), from which the overall environment takes its name, with a dedicated network protocol designed for both the single robot and the multi-robot environment, specifically designed for noisy wireless communication. Using a dedicated ROS/ETHNOS interface the communication between the path planner and the controller is made possible.
+They both mount an on-board computer which runs Linux and Wi-Fi adapter through which is performed all the communication. For the robot dynamic control system is used the ETHNOS \cite{ethnos2000} real-time software framework. The ETHNOS environment is composed of a dedicated distributed real-time operating system (developed as an extension to Linux), with a dedicated network protocol designed for both the single robot and the multi-robot environment, specifically designed for noisy wireless communication. The waypoint controller, from the algorithm to the robot CU, is implemented using a dedicated ROS/ETHNOS interface the communication between the path planner and.
 
 
 \section{Multi-rotor model and parameters tuning}
@@ -58,7 +58,7 @@ And the same goes for $y$ and $z$. This is the so called outer-loop position con
   \end{cases}
 \end{equation}
 
-where $g$ is the gravity acceleration that has to be compensated to fly and $\psi_d$ is the yaw angle which represent the aircraft heading direction. In general $\psi_d$ can be set to zero, as the orientation of the multi-rotor is not relevant unless it mounts some front directional camera. The attitude controller will then care of transforming these values into input controls for the aircraft's propellers. The standard PID controller can be represented using a block diagram as in figure \ref{fig:pid_blockDiag}.
+where $g$ is the gravity acceleration that has to be compensated to fly and $\psi_d$ is the yaw angle which represent the aircraft heading direction. In general $\psi_d$ can be set to zero, as the orientation of the multi-rotor is not relevant unless it mounts some front directional camera. The attitude controller will then care of transforming these values into input controls for the aircraft's propellers. The standard PID controller can be represented using a block diagram as in Fig. \ref{fig:pid_blockDiag}.
 
 \begin{figure}[h]
 \includegraphics[width=\textwidth]{pid_controller}
@@ -67,9 +67,9 @@ where $g$ is the gravity acceleration that has to be compensated to fly and $\ps
 \end{figure}
 
 
-To have any kind of control over the quadcopter or multi-copter, we need to be able to measure the quadcopter sensor output (for example the pitch angle), so we can estimate the error (how far we are from the the desired pitch angle, e.g. horizontal, 0 degree). We can then apply the 3 proportional (P), integrative (I) and derivative (D) control algorithms to the error, to get the next outputs for the motors aiming to correct the error.
+To have any kind of control over the quadcopter or multi-copter, we need to be able to measure the quadcopter sensor output (for example the pitch angle), so we can estimate the error (how far we are from the the desired pitch angle, e.g. horizontal, 0 degree). We can then apply the three proportional (P), integrative (I) and derivative (D) control algorithms to the error, to get the next outputs for the motors aiming to correct the error.
 
-The three parameters that we can adjust to improve better quadcopter stability are the $K_P$, $K_I$, $K_D$ gains showed in figure \ref{fig:pid_blockDiag}. Each gain coefficent basically would change the importance and influence of each algorithm to the output. Let's now look at what are the effects of these parameters to the stability of a quadcopter.
+The three parameters that we can adjust to improve better quadcopter stability are the $K_P$, $K_I$, $K_D$ gains showed in Fig. \ref{fig:pid_blockDiag}. Each gain coefficent basically would change the importance and influence of each algorithm to the output. Let's now look at what are the effects of these parameters to the stability of a quadcopter.
 
 
 Since we want to control the quadcopter's $(x,y,z)$ position in space, the parameters will be described in terms of how they affect the process of keeping the desired position.
@@ -81,7 +81,31 @@ The derivative gain coefficient $K_D$ will impact what the other two gain cannot
 Since finding the exact parameters of the mathematical model of each quadcopter can be extremely difficult the most common way to tune this parameters is by trial and error. In the following paragraph there are a couple rules of thumb. To tune quadcopter $K_P$ gain the procedure is to slowly increase it until the quadcopter reaches the position without producing big oscillations. For the $K_I$ gain, again start low and increase slowly, paying attention to how long does it take to stop and stabilize. You want to get to a point where it stabilize very quickly while not wandering around for too long. To get a reliable I-value a test under windy condition may be useful. For $K_D$ gain, it can get into a complicated interaction with $K_P$ and $K_I$ values. When using D gain, you need to go back and fine tune P and I to keep the plant well stabilized.
 
 \section{Results}
-Here we present the results for the Node Counting algorithm
 
+Here we present the results for the Node Counting algorithm using the the two aircraft. Since the test were performed just to check that everything was working properly, the map used is a very simple 3x3 grid map, where every cell has a side of 5m.
 
+\begin{figure}[H] 
+  \begin{minipage}[b]{0.5\linewidth}
+    \centering
+    \includegraphics[width=0.9\textwidth]{fir_x170800_y170800_z1700800_b}
+    \caption{Firefly path, $\ell$=8}
+    \label{fig:pel_path}
+    %\vspace{4ex}
+  \end{minipage}
+  \begin{minipage}[b]{0.5\linewidth}
+    \centering
+    \includegraphics[width=0.9\textwidth]{pel_x200800_y200800_z3001200_b}
+    \caption{Pelican path, $\ell$=12}
+    \label{fig:fir_path}
+   % \vspace{4ex}
+  \end{minipage}
+\end{figure}
 
+In the figures \ref{fig:pel_path} and \ref{fig:fir_path} we can see two separate runs of the coverage. The green polygonal chain is used as a reference and is an ideal, yet unfeasible, path of the coverage. The blue curve instead is path followed by the real aircraft and we can see that in both cases we have a very good behaviour on the x-y plane.
+In the next two figures instead we have the resulting paths for a double-robot coverage, in red the Asctec Firefly while in blue the Asctec Pelican. \\
+
+\input{./img/tikzPlots/asctec_NC_double}
+
+\noindent In the coverage (b), Fig. \ref{fig:asctec_double_b}, we can see that the firefly was slower than the pelican so the former found an already visited node in $(10,5)$ causing it to retrace his steps.
+
+On the whole the results show that the framework has proved to be fully functional. The most important aspect is that due to the approach used in creating the coverage logic, the code is implemented to be easily scalable and ready to be applied on a bigger number of multi-copters.

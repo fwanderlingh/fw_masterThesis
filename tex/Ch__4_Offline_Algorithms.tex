@@ -1,15 +1,6 @@
 \chapter{Offline Algorithms}
 
-To solve the coverage problem in an optimised fashion the problem was approached as Vehicle Routing Problem, shortly VRP, using a greedy strategy which will be discussed in depth in the next paragraphs. In this case the paths are preprocessed and the robots are guided by a central ROS node which compute the optimal path. The central node is called \emph{kernelNode} and as you can see in figure \ref{fig:nonrt_nodes} it communicates with all the quadcopter controllers through two topics: \emph{quadCtrlSignal} and \emph{pathCompleted}. Same as the before all the nodes are launched together using the \texttt{roslaunch} package, but the \emph{quadcopterRosCtrl} nodes are not able to publish their position commands until the \emph{kernelNode} is done computing the paths. Only then the central node triggers the ``start'' command, and the control nodes start moving the quadcopters. When a quadcopter finishes to follow its path, it publish a message over the \emph{pathCompleted} topic. When all the quadcopters are done, the central node stops triggering the control signal and the ROS network is shut down.
-
-
-\begin{figure}[h]
-\centering
-\includegraphics[scale=0.3]{swarm_Greedy}
-\caption[ROS network for the offline algorithms]{The nodes and topics ROS network of the offline algorithms. The ellipses are nodes while the rectangles are topics.}
-\label{fig:nonrt_nodes}
-\end{figure}
-
+To solve the coverage problem in an optimised fashion the problem was approached as Vehicle Routing Problem, shortly VRP, using a greedy strategy which will be discussed in depth in the next paragraphs. 
 The power of this algorithm is that the paths created are cycles so that at the end of the execution all the robots are back in the beginning position, which can be useful from a logistic point of view in a urban search and rescue application, and it's convenient from an energetic point of view. For a survey on \textit{green} VRP see \cite{greenVRP}. To get to the final version of the VRP Greedy I went through some intermediate solutions that I will describe in the following section to show the evolution of algorithm. The first version was just using nearest neighbour nodes when constructing the path, but in a multi-robot approach this turned out to be highly inefficient. So the A* algorithm came in to take into account all the vertices still to be inserted and using the shortest path algorithm to find a way to non-neighbouring vertices. But when increasing the size of the maps computing the A* algorithm each step of the Greedy alg. became time consuming. So finally, since the map is known a priori the Floyd-Warsall algorithm became the most natural solution to find the shortest paths between all pair of vertices at once and this drastically increased the execution time.
 
 
@@ -77,7 +68,17 @@ In this formulation inside the triple loop of the greedy solver the vertices ins
 In the next chapter will be presented the results obtained for the different algorithms and due to the motivation explained in this chapter the only algorithm used for the offline class will be the VRP Greedy using Floyd-Warshall.
 \pagebreak
 
+\section{Implementation}
 
+In this case the paths are preprocessed and the robots are guided by a central ROS node which compute the optimal path. The central node is called \emph{kernelNode} and as it can be seen in Fig. \ref{fig:nonrt_nodes} it communicates with all the quadcopter controllers through two topics: \emph{quadCtrlSignal} and \emph{pathCompleted}. Same as the before all the nodes are launched together using the \texttt{roslaunch} package, but the \emph{quadcopterRosCtrl} nodes are not able to publish their position commands until the \emph{kernelNode} is done computing the paths. Only then the central node triggers the ``start'' command, and the control nodes start moving the quadcopters. When a quadcopter finishes to follow its path, it publish a message over the \emph{pathCompleted} topic. When all the quadcopters are done, the central node stops triggering the control signal and the ROS network is shut down.
+
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.3]{swarm_Greedy}
+\caption[ROS network for the offline algorithms]{The nodes and topics ROS network of the offline algorithms. The ellipses are nodes while the rectangles are topics.}
+\label{fig:nonrt_nodes}
+\end{figure}
 
 
 

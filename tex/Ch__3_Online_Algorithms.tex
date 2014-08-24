@@ -19,19 +19,8 @@ We apply the same concept but somehow in a reversed fashion. The terrain is mode
 \end{algorithmic}
 \end{algorithm}
 
-The three search methods differ only in the \emph{choose} rule which will be discussed in the next sections. The pheromone mechanism is implemented by embedding a count-grid in each agent which is updated by means of the ROS network: each node is at a same time publishing and subscribed to the same common topic  \textit{updateLRTACount}, and each time one of the agents publishes on it, all of them updates the counts in their grid.
-
+The three search methods differ only in the \emph{choose} rule which will be discussed in the next sections. 
 Let's go through the algorithm: at the beginning a start vertex is assigned (line \ref{a:init_v}) to each quadcopter, and the set $U$ of unvisited vertices is initialised (line \ref{a:initU_rt}). In particular the unvisited set contains all the vertices in the graph with a key value of 0, representing the accessible cells. From this vertex all the neighbour vertices $w_i$ are tested looking at its $c(w_i)$ associated value. We can observe that this methods do not require any memory, since the update rule is just related to the vertex the robot is visiting at a given time and not on the history of its path.
-
-\begin{figure}[t]
-\centering
-\includegraphics[scale=0.3]{swarm_LRTAstar}
-\caption[ROS network for the online algorithms]{The nodes and topics ROS network of the online algorithms. The ellipses are nodes while the rectangles are topics.}
-\label{fig:rt_nodes}
-\end{figure}
-
-All the control \emph{quadLRTAstar} nodes are launched together using the \texttt{roslaunch} package. Each time a robot is about to move it check whether all the nodes have been visited, and if the unvisited set is empty the robots stop searching.
-As you can see in figure \ref{fig:rt_nodes} all the ROS nodes are independent, but they communicate through the common topic. This node network is relative to the LRTA* algorithm, but the same scheme holds also for all the other online algorithms.
 
 If a robots find itself in a situation where two adjacent vertices happen to have the same value of interest, whether this is a vertex count (Node Counting), an heuristic estimate (LRTA*), and edge count (Edge Counting) or an edge transition probability (PatrolGRAPH*), the robots chooses randomly one of the equally best values. For the multi-robot coverage due to possible communication delays the random factor plays a significant role in spreading out the robots across the map, decreasing the total coverage time.
 
@@ -89,113 +78,22 @@ The Edge Counting algorithm the count used for making decisions is the edge trav
 $k_{ij}$ is the edge count, an integer variable initialized to $0$ which counts the number of times that robots have chosen to proceed to $v_j$ after leaving $v_i$. In general, no real-time search algorithm can beat the complexity of LRTA*, which is a small polynomial in n. In contrast, the deterministic Edge Counting that we derived from random walks has a complexity that is at least exponential in n. The picture changes in Eulerian state spaces. The complexity of edge counting decreases dramatically and equals the complexity of LRTA*, which remains unchanged (it even beats LRTA* in certain specific domains) \cite{Koenig96easyand}. 
 
 
-\section{PatrolGRAPH*}
+\input{./tex/Ch_3.4_PatrolGraph}
 
-The logic behind the PatrolGRAPH* follows a different approach. First of all, although it is presented as online algorithm, it also presents an offline phase which is needed in order to optimise the successive online phase. So we can classify it in the middle of the two approaches. It takes into account not only information about the vertex count, but also on the edge traversal count. In particular the decision that is made in vertex $v_i$ to choose the next vertex $v_j$ is based on the probability associated to the edge that connects them $e(i,j)$.
-The algorithm is designed to solve the problem of Multi--Robot Controlled Frequency Coverage, in which a team of robots are requested to repeatedly visit a set of pre--defined locations of the environment according to a specified \emph{frequency distribution}. In particular we want the frequency distribution to be \emph{uniform} in order to visit all the vertices of the graph in the shortest time, and this kind of formulation is known as the Multi--Robot Uniform Frequency Coverage (MRUFC). In particular the MRUFC problem corresponds to the case when ${\bm{\lambda}}^*$ has a uniform distribution, i.e., for all $s_i$, $\lambda_i^* = 1/N$.  The frequency distribution of visits in particular is controlled by tuning the so called \emph{transition matrix} $P$, which contains for each edge $e_{ij}$ the probability $p_{ij}$ of being traversed. $P$ is subject to the following constraints:
+\pagebreak
 
-\begin{equation}
-\sum\limits_{j=1}^{N} {p_{ij} } = 1, \quad (i=1,\ldots,N),
-\label{Pmatrix3b}
-\end{equation}
+\section{Implementation}
 
-\begin{equation}
-0 \leq p_{ij} \leq 1,\quad (i,j=1,\ldots,N). 
-\label{Pmatrix3c}
-\end{equation}
- 
-   In its simplest form the elements of $P$ will be:
+For the online algorithms the map count values (visit count and edge traversal) are updated by means of the ROS network. Taking the LRTA* algorithm as an example, each node is at a same time publishing and subscribed to the same common topic  \textit{updateLRTACount}, and each time one of the agents publishes on it, all of them updates the counts in their grid.
+All the control \emph{quadLRTAstar} nodes are launched together using the \texttt{roslaunch} package. Each time a robot is about to move it check whether all the nodes have been visited, and if the unvisited set is empty the robots stop searching.
+As you can see in Fig. \ref{fig:rt_nodes} all the ROS nodes are independent, but they communicate through the common topic. This node network is relative to the LRTA* algorithm, but the same scheme holds also for all the other online algorithms.
 
-\begin{equation}
-p_{ij}=\frac{1}{|E_i|},
-\label{eq_adj}
-\end{equation}
-if $v_i$ and $v_j$ are adjacent, while if $s_i$ and $s_j$ are not adjacent,
-\begin{equation}
-p_{ij}=0.
-\label{eq_noadj}
-\end{equation}
-
-It is easy to understand that with this kind of formulation every vertex will receive a number of visits which is proportional to its incoming edges, and we want instead all the vertices to be visited uniformly. To accomplish this the PatrolGRAPH* performs the so called \emph{offline phase} to tune the $P$ transition matrix.
-
-\subsection{The offline phase}
-
-
-Let $\bm{1}=[1 \ldots 1]^T$ be the unitary vector. The flow balance equations in matrix form, by considering the additional requirement that the sum of average visiting rates, computed over all vertices of $\hat{G}_N$, is constant, can be written as:
-
-\begin{equation}
-\left[\begin{array}{*{20}c} {P^T - I} \\ {\bm 1^T} \end{array} \right] \bm \lambda = \left[\begin{array}{*{20}c} {0} \\ \vdots \\ {0} \\ {C} \end{array}\right].
-\label{theorem45}
-\end{equation}
-
-The system \eqref{theorem45} has exactly one solution whenever $P$ is stochastic and irreducible \cite{5711675}. The last equation in \eqref{theorem45} allows one to determine the unique solution whose components sum up to $C$.
-
-The off--line phase then has the main purpose of finding a solution to the so--called \emph{inverse problem}, i.e., the problem of choosing $P$ such as to guarantee that the solution of \eqref{theorem45}, with $C=1$, corresponds to the prescribed frequency distribution. The off--line phase does not involve the individual robots.
-
-Let ${\bf{b}} = [b_{1}\cdots b_{N^2}]^T\in \Re^{N^2}$ be defined as a vector which parametrize the elements of the transition matrix $P$, so that $P=P({\bf{b}})\in\Re^{N\times N}$. This is done by ideally subdividing $\bf{b}$ into $N$ vectors with length $N$, and by stacking them onto each other to build up the rows of $P$. More formally, 
-\begin{equation}
-p_{ij}=b_{N \times (i - 1) + j}, \quad (i,j=1,\ldots,N),
-\label{ths0}
-\end{equation}
-
-and $\bm{\lambda^*}$ represent the ideal desired solution of the MRCFC problem. Then, ${\bm{\lambda^*} - \bm{\lambda}({\bf{b}})}$ is a representation of the mismatch between the actual frequency distribution and the desired one as a function of the structure of the navigation graph (expressed by the entries of matrix $P$). 
-
-The off--line phase of the \textit{PatrolGRAPH*} algorithm is the search for a solution to the following minimization problem with respect to the unknown variable ${\bf{b}}$.
-
-
-\begin{equation}
-{\bf{b^*}} = \arg \min_{{\bf{b}}}({\bm{\lambda^*} - \bm{\lambda}({\bf{b}})})^T ({\bm{\lambda^*} - \bm{\lambda}({\bf{b}})}),
-\label{ths3}
-\end{equation}
-\indent subject to
-\begin{equation}
-\sum\limits_{j=1}^{N} {b_{N\times(i-1)+j} } = 1, \quad (i=1,\ldots,N), \\
-\label{con3a}
-\end{equation}
-\begin{equation}
-b_{N\times(i-1)+j} \ge  |\epsilon |,\quad (\forall i,j\quad s.t.\quad a_{ij} \in A_i),  
-\label{con3b}
-\end{equation}
-\begin{equation}
-b_{N\times(i-1)+j} = 0,\quad (\forall i,j\quad s.t.\quad a_{ij} \notin A_i). 
-\label{con3c}
-\end{equation}
-
-
-
-\subsection{The online phase}
-After performing the previous steps, the online phase follows the same pattern of the previous ones as in Algorithm \ref{alg:rt_gen}, but now the choose operator is more elaborated:
-
-\begin{algorithm}
-\begin{algorithmic}[1]
-\STATE{$c(v) = c(v) + 1$} \label{a:PG_upd_cv}
-\FORALL{$j$ such that $e_{cj}\in E_c$} %\label{a:initU_rt}
-	\STATE{$\Delta p_{cj} = (k_{cj}- \eta_{j})/v_c - p_{cj}$}\label{a:PG_deltaP}
-\ENDFOR
-\STATE{$l = arg min_{j}( \Delta p_{cj})$}\label{a:PG_find_min}
-\STATE{$k_{cl} = k_{cl} + 1$}\label{a:PG_upd_k}
-\RETURN{$e_{cl}$}
-\end{algorithmic}
-\caption{Choose operator for PatrolGRAPH*}\label{alg:rt_pg}
-\end{algorithm}
-
-Where: $c(v)$ same as before is the vertex count. $k_{ij}$ is the edge count. $\eta_j$ is a zero mean random variable with standard deviation $\sigma$, that is, $\eta_j=N(0,\sigma)$. In particular $\eta$ is used to purposely introduce a factor of unpredictability but since we don't need this feature we will simply set it to zero. Line \ref{a:PG_upd_cv} updates the number of visits $c(v)$ received by $v_c$; Line \ref{a:PG_deltaP} computes, for every adjacent vertex, the error $\Delta p_{cj}$ between the ratio $k_{cj}/v_c$ and the desired relative frequency $p_{cj}$; Line \ref{a:PG_find_min} picks the edge $a_{cl}$ for which $\Delta p_{cj}$ is minimum; Line \ref{a:PG_upd_k} updates $k_{cl}$. 
-In \cite{5711675} is demonstrated that the routing policy adopted by \textit{PatrolGRAPH*} in Algorithm \ref{alg:rt_pg} to distribute robots along edges $a_{ij}$ departing from $s_i$ converges to the desired relative frequencies $p_{ij}$.
-
-To demonstrate the effectiveness of the offline phase of the PatrolGRAPH* I've tested the algorithm on a 5x5 grid obstacle-free map using 3 quadcopters, running 4 simulations with the following parameters: 
-\begin{itemize}
-\item No offline phase, 10 minutes patrolling (Fig. \ref{fig:PG_pic1})
-\item With offline phase, 10 minutes patrolling (Fig. \ref{fig:PG_pic2})
-\item No offline phase, 20 minutes patrolling (Fig. \ref{fig:PG_pic3})
-\item With offline phase, 20 minutes patrolling (Fig. \ref{fig:PG_pic4})
-\end{itemize}
-
-The figures mentioned in the list are a graphical representation of the visit count for the cells in the map. In particular the visit count is encoded as a colour and the colour-bar is the reference. First of all it is important to know that the starting point for all the quadcopters is the cell in position (2,0), and this of course affects the propagation of visit in the neighbouring cells. In Figure \ref{fig:PG_pic1} and \ref{fig:PG_pic3} we can observe how without running the offline phase the corner vertices, which have the lowest number of in-going edges, receive a significantly smaller amount of visits (colour near blue).  In Figure \ref{fig:PG_pic2} and \ref{fig:PG_pic4}, instead, we notice how the visit distribution is much more uniform, and as the simulation time increases the coverage becomes more uniform.
-~\\
-\input{tex/figures/patrolGraph_CountMaps}
-
-
-
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.3]{swarm_LRTAstar}
+\caption[ROS network for the online algorithms]{The nodes and topics ROS network of the online algorithms. The ellipses are nodes while the rectangles are topics.}
+\label{fig:rt_nodes}
+\end{figure}
 
 
 

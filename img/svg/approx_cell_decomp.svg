@@ -14,7 +14,7 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.48.4 r9939"
-   sodipodi:docname="approx_cell_decomp.eps">
+   sodipodi:docname="approx_cell_decomp.pdf">
   <defs
      id="defs4" />
   <sodipodi:namedview
@@ -121,12 +121,6 @@
        style="fill:#a0a0a0;stroke:none"
        d="m 51.616444,39.817285 0,-12.12183 11.869293,0 11.869292,0 0,8.838834 c 0,4.86136 -0.118312,8.838835 -0.262917,8.838835 -0.144604,0 -5.253831,1.477348 -11.353837,3.282996 -6.100006,1.805648 -11.322875,3.282996 -11.606376,3.282996 -0.336237,0 -0.515455,-4.214611 -0.515455,-12.121831 z"
        id="path4007"
-       inkscape:connector-curvature="0"
-       transform="translate(107.93418,54.582069)" />
-    <path
-       style="fill:#a0a0a0;stroke:none"
-       d="m 26.362631,40.322361 0,-12.626906 11.869292,0 11.869292,0 0,12.626906 0,12.626907 -11.869292,0 -11.869292,0 0,-12.626907 z"
-       id="path4009"
        inkscape:connector-curvature="0"
        transform="translate(107.93418,54.582069)" />
     <path

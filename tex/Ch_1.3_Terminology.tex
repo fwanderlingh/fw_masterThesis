@@ -1,6 +1,6 @@
 \section{Terminology and Notation}\label{sec:terminology}
 
-Due to the simultaneous use of the ROS network and graph theory, I will always try to use two distinct names when referring to nodes and vertices. In particular in the ROS environment is formed of nodes and a graph has vertices.
+Due to the simultaneous use of the ROS network and graph theory, we will always try to use two distinct names when referring to nodes and vertices. In particular in the ROS environment is formed of nodes and a graph has vertices.
 
 That said, every terrain can be modelled as a undirected graph, by sampling the area using a grid.
 The grid is described by a navigation graph $G_N=(V,E)$, the \emph{navigation graph}, where $V$ is a set of vertices and $E$ is a set of edges. Each edge that connects vertex $i$ to vertex $j$ is represented as $e_{ij}=e(i,j)$. Let be $N(v)$ the set of vertices adjacent (connected through an edge) to $v$. The maximum degree (number of edges incident to a vertex) of the graph $G$ will be denoted by $\Delta (G)$ and the minimum degree by $\delta (G)$.
@@ -22,7 +22,7 @@ ${\bm{\lambda}}^*=[\lambda_1^*,\cdots,\lambda_N^*]^T  \in \Re^N$, $0 \le \lambda
 
 Similarly to \cite{koenig2001}, the expression ``one-of $X$'' returns randomly one of the elements of $X$. The notation $succ(v,e)$ returns the vertex linked to $v$ through the edge $e$. The expression $c(v)$ represents the count value associated with to the vertex $v$, initially set to zero for all $v \in V$.
 
-Let be $U$ a structure containing all the vertices of the graph still to be visited, i.e., the \emph{unvisited set}. At last et $\ell(\cdot)$ be the function that returns the length of a path and, in particular, let $\ell(P_i) \equiv \ell_i$ be the length of the $i-$th path.
+Let be $U$ a structure containing all the vertices of the graph still to be visited, i.e., the \emph{unvisited set}. At last let $\ell(\cdot)$ be the function that returns the length of a path and, in particular, let $\ell(P_i) \equiv \ell_i$ be the length of the $i-$th path.
 
 
 

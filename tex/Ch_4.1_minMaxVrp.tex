@@ -12,7 +12,7 @@ A path $P_i$ is assigned to each quadcopter, consisting in an ordered sequence o
 In particular the path of each quadcopter $i$ starts in $s_i$ and ends in $e_i$.
 Let $\ell(\cdot)$ be the function that returns the length of a path and, in particular, let $\ell(P_i) \equiv \ell_i$ be the length of the $i-$th path.
 
-The problem consist in planning the trajectories such that:
+\noindent The problem consist in planning the trajectories such that:
 
 \begin{enumerate}[label=\textbf{\arabic*.}]
 \item the distance travelled by  the quadcopter with the longest path is minimized
@@ -20,7 +20,7 @@ The problem consist in planning the trajectories such that:
 \item every vertex is visited at least once
 \end{enumerate}
 
-In symbols:
+\noindent In formulas, defining $\mathcal{L}$ as the current longest path the objective function will be:
 \begin{equation}
 \min \quad \mathcal{L} \label{e:obj}
 \end{equation}
